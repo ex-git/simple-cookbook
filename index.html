@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Easy recipes cookbook</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+    <header role="banner">
+        <h1>Happy cooking!</h1>
+    </header>
+
+    <main role="main">
+        <section role="region">
+            <form class="search" name="search">
+                <legend>Search by meal name or ingredient</legend>
+                <label for="searchMealName">By Meal Name:</label>
+                <input type="radio" name="search" id="searchMealName" value="mealName" checked>
+                <label for="searchIngredient">By Ingredient:</label>
+                <input type="radio" name="search" id="searchIngredient" value="ingredient"> 
+                <fieldset class="searchMealName">
+                    <label for="mealName">Type here:</label>
+                    <input type="text" required placeholder="Salmon Prawn Risotto" id="mealName" class="mealName">
+                </fieldset>
+                <fieldset class="filterSearch" hidden>
+                    <label for="ingredients">Ingredient:</label>
+                    <select name="ingredients" id="ingredients" class="js-ingredient">
+                    </select>
+                    <label for="areas">Regional:</label>
+                    <select name="areas" id="areas" class="js-area">
+                    </select>
+                </fieldset>
+                <button type="submit">Show me the recipes</button>
+            </form>
+        </section>
+        <section role="region" aria-live="assertive" class="result">
+            <div class="js-result">
+                <header role="banner">
+                    <h2>Spicy Arrabiata Penne</h2>
+                </header>
+                <div class="finalPicture">
+                    <img src="https:\/\/www.themealdb.com\/images\/media\/meals\/ustsqw1468250014.jpg" alt="">
+                </div>
+            </div>
+        </section>
+    </main>
+    
+</body>
+</html>
