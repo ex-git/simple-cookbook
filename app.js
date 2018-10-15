@@ -85,7 +85,6 @@ function getNutrition(result) {
         app_key: '0be18ee23172028232a8ec8b5d419896',
         ingr: ingredientsQuery.join(' and ')
     }
-    console.log(ingredientsQuery.join(' and '));
     $.getJSON(edamamBaseURL,query,function(data){
         renderHTMLDetail(data,resultObject)})
 }
