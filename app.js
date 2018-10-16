@@ -26,8 +26,9 @@ function filterSearch(ingredient,area) {
         if (area==='*') {
             //update selection options
             let areas = [];
-            $('select[class="js-area"]').empty();
-            $('select[class="js-area"]').append(`<option value="*">*</option>`)
+            if (mealByIngredient.meals) {
+                $('select[class="js-area"]').empty();
+                $('select[class="js-area"]').append(`<option value="*">*</option>`);
             mealByIngredient.meals.forEach(meal=> {
                 let queryId = {
                     i: meal.idMeal
@@ -44,7 +45,11 @@ function filterSearch(ingredient,area) {
             renderHTML(mealByIngredient)
         }
         else {
-            mealByIngredient.meals.forEach(meal=> {
+            alert('Can find anything. Try something else?')
+        }
+        }
+        else {
+            if (mealByIngredient.meals) {mealByIngredient.meals.forEach(meal=> {
                 let queryId = {
                     i: meal.idMeal
                 }
@@ -59,7 +64,10 @@ function filterSearch(ingredient,area) {
                     }
             })
             });
-        }
+        } 
+    else {
+        alert('Nothing found with this ingredient and in this area. Try something else please')
+    }}
     })
 
 }
@@ -118,7 +126,8 @@ function getMealByName(keyword) {
 }
 
 function renderHTML(result) {
-    result.meals.forEach((meal,index)=> {
+    if(result.meals) {
+        result.meals.forEach((meal,index)=> {
         $('.js-result').append(`<section class="meal" id="${meal.idMeal}"><header role="banner">
         <h3>${meal.strMeal}</h3>
     </header>
@@ -127,7 +136,10 @@ function renderHTML(result) {
     </div>
     </section>`)
     });
-    catchMealClick()
+    catchMealClick()}
+    else {
+        alert("Can't find anything with that name. Try something else?")
+    }
 }
 
 function renderHTMLDetail(result,resultObject) {
