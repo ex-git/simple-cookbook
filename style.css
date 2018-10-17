@@ -1,14 +1,145 @@
-body {
+html {
     box-sizing: border-box;
     padding: 0;
-    margin: 0
+    margin: 0;
+    height: 100%;
+}
+
+* {
+    border: 1px solid black;
+}
+body {
+    background-image: url('https://images.unsplash.com/photo-1495195134817-aeb325a55b65');
+    background-size:cover;
+    background-position: center;
+    font-family: 'K2D', sans-serif;
+}
+
+.mainHeader {
+    position: relative;
 }
 
 main {
-    padding: 3%;
-    width: 94%
+    padding: auto 3%;
+    width: 94%;
+    margin: auto;
+}
+
+fieldset {
+    border: none;
+}
+
+section[class="searchArea"]{
+    border: 5px solid green;
+    border-radius: 5px;
+    padding: 4px;
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    margin: auto;
+    width: 300px;
+    height:100px;
+}
+section[class="result"] {
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    margin: auto;
+    width: 65%;
+    height: 55%;
+}
+
+.js-result {
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
+.meal {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.detail {
+    text-align: left;
+    margin-left: 10px;
+}
+
+.mealDescription {
+    font-size: 1.5em;
+    display: inline-block;
+    width:48%;
+    vertical-align: middle
+}
+
+.next, .pre, .total {
+    position: absolute;
+}
+
+.next {
+    left:100%
+}
+
+.total {
+    top: 100%;
+    left:0;
+    right:0
+}
+.pre {
+    right: 100%
+}
+
+.ingredients {
+    font-size: 1.2em;
+    display: inline-block;
+    width:55%;
+}
+
+.ingredients ul {
+    list-style: none;
+    margin:15px 0 0 5px;
+    padding:0;
+}
+.ingredients li{
+    border: 1px dashed red;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 0px 5px;
+    display: inline-block;
+}
+
+.finalPicture {
+    display:inline-block;
+    width: 40%;
+    vertical-align: middle;
 }
 
 .finalPicture img{
-    width: 100%
+    width:100%;
+}
+
+.center {
+    text-align: center;
+    font-size:1.6em;
+}
+
+.left {
+    float: left;
+    margin: 10px;
+}
+
+.nutrition {
+    position: absolute;
+    right:5px;
+}
+
+.video {
+    min-height:350px;
+}
+
+.instructionSelect * {
+    vertical-align: middle;
 }

@@ -6,16 +6,18 @@
     <title>Easy recipes cookbook</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <link href="https://fonts.googleapis.com/css?family=K2D" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="app.js"></script>
 </head>
 <body>
-    <header role="banner">
-        <h1>Happy cooking!</h1>
-    </header>
 
     <main role="main">
-        <section role="region">
+        <header role="banner" class="mainHeader">
+                <h1>Happy cooking!</h1>
+        </header>            
+        <section role="region" class="searchArea">
             <form class="search" name="search">
                 <legend>Search by meal name or ingredient</legend>
                 <label for="searchMealName">By Meal Name:</label>
@@ -28,23 +30,19 @@
                 </fieldset>
                 <fieldset class="filterSearch" hidden>
                     <label for="ingredients">Ingredient:</label>
-                    <select name="ingredients" id="ingredients" class="js-ingredient">
-                    </select>
+                    <!-- <select name="ingredients" id="ingredients" class="js-ingredient">
+                    </select> -->
+                    <input type="text" placeholder="beef" id="ingredients" class="ingredients">
                     <label for="areas">Regional:</label>
                     <select name="areas" id="areas" class="js-area">
+                            <option value="*">*</option>
                     </select>
                 </fieldset>
                 <button type="submit">Show me the recipes</button>
             </form>
         </section>
-        <section role="region" aria-live="assertive" class="result">
+        <section role="region" aria-live="assertive" class="result" hidden>
             <div class="js-result">
-                <header role="banner">
-                    <h2>Spicy Arrabiata Penne</h2>
-                </header>
-                <div class="finalPicture">
-                    <img src="https:\/\/www.themealdb.com\/images\/media\/meals\/ustsqw1468250014.jpg" alt="">
-                </div>
             </div>
         </section>
     </main>
