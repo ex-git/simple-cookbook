@@ -5,33 +5,31 @@ html {
     height: 100%;
 }
 
-* {
-    border: 1px solid black;
-}
 body {
     background-image: url('https://images.unsplash.com/photo-1495195134817-aeb325a55b65');
     background-size:cover;
     background-position: center;
     font-family: 'K2D', sans-serif;
+    text-shadow: 0px 0px 1px white;
+    color:#000;
 }
 
-.mainHeader {
-    position: relative;
+a {
+    color: black
 }
 
 main {
-    padding: auto 3%;
-    width: 94%;
+    width: 98%;
     margin: auto;
 }
 
 fieldset {
     border: none;
+    margin:10px auto;
+    padding:0
 }
 
 section[class="searchArea"]{
-    border: 5px solid green;
-    border-radius: 5px;
     padding: 4px;
     position: absolute;
     top:0;
@@ -39,19 +37,56 @@ section[class="searchArea"]{
     left:0;
     right:0;
     margin: auto;
-    width: 300px;
-    height:100px;
+    width: 90%;
+    z-index: 1;
+    height:50%;
+    font-size: 1.5em
 }
+
+
+form[class="search"] button {
+    border-radius: 5px;
+    background: linear-gradient(to bottom, rgba(58, 29, 185, 0.158) 60%,rgb(49, 6, 6)145%);
+
+}
+
+form[class="search"] button:hover {
+    color:white;
+    background: linear-gradient(to bottom, rgba(58, 29, 185, 0.508) 60%,rgba(49, 6, 6, 0.658)145%);
+}
+
+form input[type="radio"] {
+    width: 20px;
+    height: 20px;
+}
+
+form input[type="text"] {
+    border-radius: 5px;
+    height:20px
+}
+
+form label::before {
+    content: '';
+    display: table;
+    clear:both
+}
+
+section[class="searchArea"] legend {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
 section[class="result"] {
     position: absolute;
-    top:0;
+    top:40px;
     bottom:0;
     left:0;
     right:0;
     margin: auto;
-    width: 65%;
-    height: 55%;
+    width: 95%;
 }
+
 
 .js-result {
     vertical-align: middle;
@@ -65,20 +100,21 @@ section[class="result"] {
 
 .detail {
     text-align: left;
-    margin-left: 10px;
 }
 
 .mealDescription {
-    font-size: 1.5em;
-    display: inline-block;
-    width:48%;
-    vertical-align: middle
+    font-size: 2em;
 }
 
 .next, .pre, .total {
-    position: absolute;
+    display:inline-block;
+    vertical-align: middle;
 }
 
+.pageNav {
+    margin-top:15px;
+    font-size: 1.2em
+}
 .next {
     left:100%
 }
@@ -86,16 +122,15 @@ section[class="result"] {
 .total {
     top: 100%;
     left:0;
-    right:0
+    right:0;
+    margin:10px;
 }
 .pre {
     right: 100%
 }
 
-.ingredients {
+.ingredients, .instruction {
     font-size: 1.2em;
-    display: inline-block;
-    width:55%;
 }
 
 .ingredients ul {
@@ -109,37 +144,90 @@ section[class="result"] {
     margin: 5px;
     padding: 0px 5px;
     display: inline-block;
+    background-color: rgba(205, 236, 255, 0.541);
+    transition-property: background-color;
+    transition-duration: 1s;
+    transition-timing-function: linear
 }
 
-.finalPicture {
-    display:inline-block;
-    width: 40%;
-    vertical-align: middle;
+.ingredients li:hover {
+    background-color: rgba(255, 0, 0, 0.541)
 }
 
 .finalPicture img{
     width:100%;
+    border-radius:15px;
 }
 
 .center {
     text-align: center;
     font-size:1.6em;
+    margin: 30px;
 }
 
-.left {
-    float: left;
-    margin: 10px;
-}
 
 .nutrition {
-    position: absolute;
-    right:5px;
+    position: relative;
+    display: block;
+    text-align: right;
+    margin-bottom:20px;
+}
+
+.red {
+    color: red;
+}
+
+.basicInfo {
+    margin-top:15px;
 }
 
 .video {
     min-height:350px;
 }
 
-.instructionSelect * {
-    vertical-align: middle;
+.instructionSelect {
+    margin-top: 10px;
 }
+
+.verticalAlign {
+    vertical-align: middle
+}
+
+.instruction ul{
+    padding-left:15px;
+}
+
+.link {
+    cursor: pointer;
+    text-decoration: none
+}
+
+.hidden {
+    display: none;
+    font-size:0
+}
+
+.textInstruction, .videoInstruction {
+    float: left
+}
+
+
+
+section button {
+    background-color: transparent;
+    border: none;
+    font-size: 1.4em;
+    cursor: pointer;
+    transition-property: color;
+    transition-duration: 1s;
+    transition-timing-function: linear;
+}
+
+section button:hover {
+    color: red;
+}
+
+/* 
+section button:hover {
+    color: red;
+} */

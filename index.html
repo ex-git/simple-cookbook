@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Easy recipes cookbook</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="responsive.css" />
     <link href="https://fonts.googleapis.com/css?family=K2D" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -13,36 +14,31 @@
 </head>
 <body>
 
-    <main role="main">
-        <header role="banner" class="mainHeader">
-                <h1>Happy cooking!</h1>
-        </header>            
+    <main role="main">         
         <section role="region" class="searchArea">
             <form class="search" name="search">
-                <legend>Search by meal name or ingredient</legend>
+                <legend>Search recipe by meal name or ingredient</legend>
                 <label for="searchMealName">By Meal Name:</label>
                 <input type="radio" name="search" id="searchMealName" value="mealName" checked>
                 <label for="searchIngredient">By Ingredient:</label>
                 <input type="radio" name="search" id="searchIngredient" value="ingredient"> 
                 <fieldset class="searchMealName">
-                    <label for="mealName">Type here:</label>
+                    <label for="mealName">Input Meal Name:</label>
                     <input type="text" required placeholder="Salmon Prawn Risotto" id="mealName" class="mealName">
                 </fieldset>
                 <fieldset class="filterSearch" hidden>
-                    <label for="ingredients">Ingredient:</label>
-                    <!-- <select name="ingredients" id="ingredients" class="js-ingredient">
-                    </select> -->
-                    <input type="text" placeholder="beef" id="ingredients" class="ingredients">
-                    <label for="areas">Regional:</label>
+                    <label for="ingredient">Ingredient:</label>
+                    <input type="text" placeholder="Beef" id="ingredient" class="ingredient">
+                    <label for="areas"class="js-area">Regional:</label>
                     <select name="areas" id="areas" class="js-area">
                             <option value="*">*</option>
                     </select>
                 </fieldset>
-                <button type="submit">Show me the recipes</button>
+                <button type="submit">Show me the recipe</button>
             </form>
         </section>
         <section role="region" aria-live="assertive" class="result" hidden>
-            <div class="js-result">
+            <div class="js-result" aria-live="assertive">
             </div>
         </section>
     </main>
