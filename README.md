@@ -33,7 +33,7 @@ The app will return meal name, region info, ingredients, text instructions for h
 
 ## Key technology used
 
-..*HTML
-..*CSS
-..*JavaScript
-..*jQuery
+-HTML
+-CSS
+-JavaScript
+-jQuery
