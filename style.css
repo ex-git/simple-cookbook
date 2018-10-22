@@ -212,8 +212,6 @@ section[class="result"] {
     float: left
 }
 
-
-
 section button {
     background-color: transparent;
     border: none;
@@ -227,8 +225,3 @@ section button {
 section button:hover {
     color: red;
 }
-
-/* 
-section button:hover {
-    color: red;
-} */

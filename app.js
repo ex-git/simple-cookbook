@@ -34,53 +34,53 @@ function filterSearch(ingredient,area) {
                     let queryId = {
                         i: meal.idMeal
                     }
-                $.getJSON(mealBaseURLById,queryId,function(mealById) {
-                        if (!areas.includes(mealById.meals[0].strArea)) {  
-                            areas.push(mealById.meals[0].strArea);
-                            $('select[class="js-area"]').append(`<option value="${mealById.meals[0].strArea}">${mealById.meals[0].strArea}</option>`);}
-                })
-            });
+                    $.getJSON(mealBaseURLById,queryId,function(mealById) {
+                            if (!areas.includes(mealById.meals[0].strArea)) {  
+                                areas.push(mealById.meals[0].strArea);
+                                $('select[class="js-area"]').append(`<option value="${mealById.meals[0].strArea}">${mealById.meals[0].strArea}</option>`);}
+                    })
+                });
             renderHTML(mealByIngredient)
+            }
+            else {
+                alert('Can find anything. Try something else?')
+            }
         }
-        else {
-            alert('Can find anything. Try something else?')
-        } }
         else {
             if (mealByIngredient.meals) {
                 let arrayMeals = [];
                 mealByIngredient.meals.forEach(meal=> {
-                        let queryId = {
-                            i: meal.idMeal
-                        };
-                        //API is missing area info when query it via ingredient name, fix with turning off async and loop query thru each
-                        $.ajaxSetup({
-                            async: false
-                        });
-                        $.getJSON(mealBaseURLById,queryId, function(mealById) {
-                            if (mealById.meals[0].strArea === area) {
-                                arrayMeals.push(meal)
-                            }
-                        })
-                     })
-                     let newMeals = {
+                    let queryId = {
+                        i: meal.idMeal
+                    };
+                    //API is missing region info when query it via ingredient name, fix with turning off async and loop query thru each
+                    $.ajaxSetup({
+                        async: false
+                    });
+                    $.getJSON(mealBaseURLById,queryId, function(mealById) {
+                        if (mealById.meals[0].strArea === area) {
+                            arrayMeals.push(meal)
+                        }
+                    })
+                })
+                    let newMeals = {
                         'meals': arrayMeals
                     }
-                     if (newMeals.meals.length === 0) {
-                         alert('Nothing found with this ingredient and in this area. Try something else pleas')
-                     }
-                     else {
-                        renderHTML(newMeals)
-                     }
-    } 
-        else {
-            alert('Nothing found with this ingredient and in this area. Try something else please')
+                    if (newMeals.meals.length === 0) {
+                        alert('Nothing found with this ingredient and in this area. Try something else pleas')
+                    }
+                    else {
+                    renderHTML(newMeals)
+                    }
+            } 
+            else {
+                alert('Nothing found with this ingredient and in this area. Try something else please')
+            }
         }
-}
     })
-
 }
 
-// get total carlories from API
+//get total carlories from API
 function getNutrition(result) {
     let ingredientsQuery = [];
     let resultObject = result.meals[0];
@@ -129,6 +129,8 @@ function getMealByName(keyword) {
 
 //Update result to user
 function renderHTML(result) {
+
+    //for only one result response
     if(result.meals !==undefined && result.meals.length === 1) {
         $('header[class="mainHeader"]').prop('hidden',true);
         $('.result').prop('hidden',false);
@@ -136,6 +138,7 @@ function renderHTML(result) {
         $('section[class="searchArea"]').append(`<button class="fas fa-search searchIcon fa-1x" aria-label="click to search again" title="click to search again"></button>`);
         $('section[class="searchArea"]').css({'top':'2px','bottom':'unset','width':'45px','height':'unset', 'border':'unset'});
         $('.searchIcon').prop('hidden', false);
+        //if no region info from response, query it from API via meal ID and add to the response
         if (!result.meals[0].strArea) {
             let query = {
                 i: result.meals[0].idMeal
@@ -173,6 +176,7 @@ function renderHTML(result) {
         catchMealClick();
         searchIconClick()
     }
+    //for multiple results
     else if (result.meals !==undefined && result.meals.length > 1) {
         $('header[class="mainHeader"]').prop('hidden',true);
         $('.result').prop('hidden',false);
@@ -180,10 +184,12 @@ function renderHTML(result) {
         $('section[class="searchArea"]').append(`<button class="fas fa-search searchIcon fa-1x" aria-label="click to search again" title="click to search again"></button>`);
         $('section[class="searchArea"]').css({'bottom':'unset','width':'15px','height':'unset'});
         const resultArray = result.meals.map(meal=> 
+            // check if result included region info
             {if (meal.strArea === undefined) {
                 let query = {
                     i: meal.idMeal
                 }
+                //API is missing region info when query it via ingredient name, fix with turning off async and loop query thru each
                 $.ajaxSetup({
                     async: false
                 });
@@ -191,16 +197,16 @@ function renderHTML(result) {
                     meal.strArea = data.meals[0].strArea;
                 })};
                 return `<section class="meal" id="${meal.idMeal}">
-            <div class="mealDescription">
-                <header role="banner">
-                    <h3><a href="#" class="link">${meal.strMeal}</a></h3>
-                </header>
-                <p><span class="region">Region:</span> ${meal.strArea}</p>
-            </div><div class="finalPicture link">
-                <img src="${meal.strMealThumb}" alt="" class="${meal.idMeal}">
-            </div>
-            <div class="pageNav"></div>
-            </section>`}    )
+                <div class="mealDescription">
+                    <header role="banner">
+                        <h3><a href="#" class="link">${meal.strMeal}</a></h3>
+                    </header>
+                    <p><span class="region">Region:</span> ${meal.strArea}</p>
+                </div><div class="finalPicture link">
+                    <img src="${meal.strMealThumb}" alt="" class="${meal.idMeal}">
+                </div>
+                <div class="pageNav"></div>
+                </section>`})
             const index = 0
             $('.js-result').append(resultArray[index]);
             $('.pageNav').append(`<div class="total" role="presentation">Total ${resultArray.length} meals</div>`);
@@ -304,6 +310,7 @@ function renderHTMLDetail(result,resultObject) {
     searchIconClick()
 }
 
+//show instruction page
 function showInstruction(mealName,instruction,videoInstruction) {
     $('.js-result').on('click', '.textInstruction', event=>{
         $('.instruction').html(`<ul>${instruction}</ul>`)
@@ -322,6 +329,8 @@ function showInstruction(mealName,instruction,videoInstruction) {
         $('.nutrition').prop('hidden',true);
      }) 
 }
+
+//switch between search by meal name or ingredient
 function catchSelection() {
     $('#searchIngredient').on('click', event=> {
         // only fetch data from API only on first run, prevent overloading API server
@@ -345,6 +354,7 @@ function catchSelection() {
     })
 }
 
+
 function catchMealClick() {
     $('.js-result').on('click', '.link', event=> {
         event.preventDefault();
@@ -352,6 +362,7 @@ function catchMealClick() {
         getMealById(id);
     })
 }
+
 function catchSubmit() {
     catchSelection();
     $('.search').on('submit', event=> {
