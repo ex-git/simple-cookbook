@@ -29,7 +29,7 @@ Meal video instruction page
 ## Summary
 
 This is a simple app for people who want to find recipe with meal name or just the one ingredient of a meal.
-The app will return meal name, region info, ingredients, text instructions for how to prepare the meal, video instruction demo, and picture. This app will also calculate the total calory value estimated for the meal. 
+The app will return meal name, region info, ingredients, text instructions for how to prepare the meal, video instruction demo, and picture. This app will also calculate the total calories value estimated for the meal. 
 
 ## Key technology used
 
