@@ -6,6 +6,26 @@ https://ex-git.github.io/simple-cookbook/
 
 ## Screenshots
 
+Front page
+
+![Front Page][/screenshots/fontPage.png]
+
+Result page
+
+![Result Page][/screenshots/resultPage.png]
+
+Meal detail page
+
+![Meal Detail Page][/screenshots/detailPage.png]
+
+Meal instruction page
+
+![Meal Detail Page][/screenshots/instructionPage.png]
+
+Meal video instruction page
+
+![Meal Detail Page][/screenshots/videoInstructionPage.png
+
 ## Summary
 
 This is a simple app for people who want to find recipe with meal name or just the one ingredient of a meal.
@@ -13,7 +33,7 @@ The app will return meal name, region info, ingredients, text instructions for h
 
 ## Key technology used
 
-*HTML
-*CSS
-*JavaScript
-*jQuery
+..*HTML
+..*CSS
+..*JavaScript
+..*jQuery
