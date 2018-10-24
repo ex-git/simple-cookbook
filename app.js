@@ -43,7 +43,7 @@ function filterSearch(ingredient,area) {
             renderHTML(mealByIngredient)
             }
             else {
-                alert('Can find anything. Try something else?')
+                alert('Can find anything with that Ingredient. Try something else?')
             }
         }
         else {
@@ -74,7 +74,7 @@ function filterSearch(ingredient,area) {
                     }
             } 
             else {
-                alert('Nothing found with this ingredient and in this area. Try something else please')
+                alert('Nothing found with this ingredient and in this region. Try something else please')
             }
         }
     })
@@ -131,7 +131,7 @@ function getMealByName(keyword) {
 function renderHTML(result) {
 
     //for only one result response
-    if(result.meals !==undefined && result.meals.length === 1) {
+    if(result.meals && result.meals !==undefined && result.meals.length === 1) {
         $('header[class="mainHeader"]').prop('hidden',true);
         $('.result').prop('hidden',false);
         $('.search').prop('hidden',true);
@@ -177,7 +177,7 @@ function renderHTML(result) {
         searchIconClick()
     }
     //for multiple results
-    else if (result.meals !==undefined && result.meals.length > 1) {
+    else if (result.meals && result.meals !==undefined && result.meals.length > 1) {
         $('header[class="mainHeader"]').prop('hidden',true);
         $('.result').prop('hidden',false);
         $('.search').prop('hidden',true);
@@ -379,4 +379,12 @@ function catchSubmit() {
     })
 
 }
-$(catchSubmit)
+
+function go() {
+    $('.go').on('click', event=>{
+        $('section[class="introPage"]').prop('hidden',true);
+        $('section[class="searchArea"]').prop('hidden',false)
+    })
+    catchSubmit();
+}
+$(go)
