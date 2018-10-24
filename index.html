@@ -13,8 +13,18 @@
     <script src="app.js"></script>
 </head>
 <body>
-    <main role="main">         
-        <section role="region" class="searchArea">
+    <main role="main">     
+        <section role="region" class="introPage">
+            <header role="banner" class="logo">
+                        <h1>Simpel Cookbook</h1>
+            </header>
+            <div class="intro">
+                    <h2>Looking for the best Quick and Easy top-rated recipes? We have it here.</h2>
+                    <button class="go"><i class="fas fa-search fa-3x"></i></button>
+            </div>
+        </section>
+
+        <section role="region" class="searchArea" hidden>
             <form class="search" name="search">
                 <legend>Search recipe by meal name or ingredient</legend>
                 <label for="searchMealName">By Meal Name:</label>

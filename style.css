@@ -43,6 +43,36 @@ section[class="searchArea"]{
     font-size: 1.5em
 }
 
+.go {
+    text-align: center
+}
+
+section[class="introPage"]{
+    padding: 4px;
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    margin: auto;
+    width: 75%;
+    z-index: 1;
+    height:40%;
+}
+section[class="introPage"] h1{
+    font-size: 3em;
+    margin: 5px 10px;
+}
+
+section[class="introPage"] h2{
+    font-size: 2em;
+    font-size: 1.2em
+}
+
+.intro {
+    margin: 15px;
+    text-align: left;
+}
 
 form[class="search"] button {
     border-radius: 5px;
