@@ -4,6 +4,7 @@
         width: 60%;
         font-size: 1.5em
     }
+    
     section[class="result"] {
         position: absolute;
         top:0;
@@ -52,7 +53,7 @@
         position: absolute;
         width:48%;
         left:2%;
-        bottom:20%
+        bottom:15%
     }
 
     .fullWidth {

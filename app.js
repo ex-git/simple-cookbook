@@ -23,60 +23,46 @@ function filterSearch(ingredient,area) {
     const queryIngredient = {
         i: ingredient
     }
+
     $.getJSON(mealBaseURLByfilter,queryIngredient,function(mealByIngredient) {
-        if (area==='*') {
-            //update selection options for area to include avaialble areas when user search with ingredient name but let area blank.
-            let areas = [];
-            if (mealByIngredient.meals) {
-                $('select[class="js-area"]').empty();
-                $('select[class="js-area"]').append(`<option value="*">*</option>`);
-                mealByIngredient.meals.forEach((meal,index)=> {
-                    let queryId = {
-                        i: meal.idMeal
-                    }
-                    $.getJSON(mealBaseURLById,queryId,function(mealById) {
-                            if (!areas.includes(mealById.meals[0].strArea)) {  
-                                areas.push(mealById.meals[0].strArea);
-                                $('select[class="js-area"]').append(`<option value="${mealById.meals[0].strArea}">${mealById.meals[0].strArea}</option>`);}
-                    })
-                });
-            renderHTML(mealByIngredient)
-            }
-            else {
-                alert('Can find anything with that Ingredient. Try something else?')
-            }
-        }
-        else {
-            if (mealByIngredient.meals) {
+        //API return meal without region info, query API with mealID for each result and amend the area info into the origin JSON return
+        if (mealByIngredient.meals) {
                 let arrayMeals = [];
-                mealByIngredient.meals.forEach(meal=> {
+                mealByIngredient.meals.forEach((meal,idx)=> {
                     let queryId = {
                         i: meal.idMeal
                     };
-                    //API is missing region info when query it via ingredient name, fix with turning off async and loop query thru each
-                    $.ajaxSetup({
-                        async: false
-                    });
                     $.getJSON(mealBaseURLById,queryId, function(mealById) {
-                        if (mealById.meals[0].strArea === area) {
-                            arrayMeals.push(meal)
+                        if (area === '*') {
+                            meal.strArea = mealById.meals[0].strArea;
+                            arrayMeals.push(meal);
+                            if (idx === mealByIngredient.meals.length -1) {
+                                let newMeals = {
+                                    'meals': arrayMeals
+                                }
+                                renderHTML(newMeals)
+                            }
                         }
-                    })
+                        else {
+                            if (mealById.meals[0].strArea === area) {
+                                meal.strArea = area;
+                                arrayMeals.push(meal);
+                            }
+                            if (idx === mealByIngredient.meals.length -1) {
+                                let newMeals = {
+                                    'meals': arrayMeals
+                                }
+                            renderHTML(newMeals)
+                            }
+                        }
+                    }
+                    )
                 })
-                    let newMeals = {
-                        'meals': arrayMeals
-                    }
-                    if (newMeals.meals.length === 0) {
-                        alert('Nothing found with this ingredient and in this area. Try something else pleas')
-                    }
-                    else {
-                    renderHTML(newMeals)
-                    }
+                    
             } 
             else {
                 alert('Nothing found with this ingredient and in this region. Try something else please')
             }
-        }
     })
 }
 
@@ -107,14 +93,34 @@ function getNutrition(result) {
         renderHTMLDetail(data,resultObject)})
 }
 
-//get all available areas from API and update selection options
-function getMealsAreas() {
-    const query = {
-        a: 'list'
-    }
-    $.getJSON(mealBaseURLList,query,function(areas) {
-        $('select[class="js-area"]').append(`<option value="*">*</option>`);
-        areas.meals.map(area=>area.strArea).sort().forEach(area=>$('select[class="js-area"]').append(`<option value="${area}">${area}</option>`))
+//update region options only show available regions when user finish typing ingredient name
+function getMealsAreas(ingredientArray) {
+    $('fieldset[class="filterSearch"]').on('focusout', '#ingredient', event=> {
+        let ingredientInput = $('input[class="ingredient"]').val().toLowerCase();
+        let query = {
+                i: ingredientInput
+            }
+        let areas = ['*'];
+        $.getJSON(mealBaseURLByfilter,query,function(mealByIngredient) {
+            if (mealByIngredient.meals !== null) {
+            mealByIngredient.meals.forEach((meal,index)=> {
+                let queryId = {
+                    i: meal.idMeal
+                }
+                $.getJSON(mealBaseURLById,queryId,function(mealById) {
+                        if (!areas.includes(mealById.meals[0].strArea)) {  
+                            areas.push(mealById.meals[0].strArea);
+                        }
+                        if (index === mealByIngredient.meals.length-1) {
+                            let menuArea = areas.sort().map(area=>`<option value="${area}">${area}</option>`)
+                            $('select[class="js-area"]').html(menuArea);
+                        }
+                })
+            })}
+            else {
+                $('select[class="js-area"]').html(`<option value="*">*</option>`);
+            }
+        })
     })
 }
 
@@ -129,7 +135,6 @@ function getMealByName(keyword) {
 
 //Update result to user
 function renderHTML(result) {
-
     //for only one result response
     if(result.meals && result.meals !==undefined && result.meals.length === 1) {
         $('header[class="mainHeader"]').prop('hidden',true);
@@ -138,6 +143,7 @@ function renderHTML(result) {
         $('section[class="searchArea"]').append(`<button class="fas fa-search searchIcon fa-1x" aria-label="click to search again" title="click to search again"></button>`);
         $('section[class="searchArea"]').css({'top':'2px','bottom':'unset','width':'45px','height':'unset', 'border':'unset'});
         $('.searchIcon').prop('hidden', false);
+        
         //if no region info from response, query it from API via meal ID and add to the response
         if (!result.meals[0].strArea) {
             let query = {
@@ -147,71 +153,72 @@ function renderHTML(result) {
                 $('.js-result').append(`<section class="meal" id="${result.meals[0].idMeal}">
                 <div class="mealDescription">
                 <header role="banner">
-                    <h3><a href="#" class="link">${result.meals[0].strMeal}</a></h3>
+                    <h3><a href="#" class="link" title="${result.meals[0].strMeal}">${result.meals[0].strMeal}</a></h3>
                 </header>
-                <p><span class="region">Region:</span> ${result.meals[0].strArea}</p>
+                <p><span class="region">Region:</span> ${data.meals[0].strArea}</p>
                 </div><div class="finalPicture link">
                 <img src="${result.meals[0].strMealThumb}" alt="" class="${result.meals[0].idMeal}">
                 </div>
                 <nav role="navigation">
-                <div class="pageNav"><div class="total" class="link">Total 1 meal</div></nav>
+                <div class="pageNav"><div class="total" class="link">Total 1 result</div></nav>
                 </div>
                 </section>`);
+                $('section[class="introPage"]').prop('hidden',true);
             })
         }
         else {
             $('.js-result').append(`<section class="meal" id="${result.meals[0].idMeal}">
             <div class="mealDescription">
                 <header role="banner">
-                    <h3><a href="#" class="link">${result.meals[0].strMeal}</a></h3>
+                    <h3><a href="#" class="link" title="${result.meals[0].strMeal}">${result.meals[0].strMeal}</a></h3>
                 </header>
                 <p><span class="region">Region:</span> ${result.meals[0].strArea}</p>
             </div><div class="finalPicture link">
                 <img src="${result.meals[0].strMealThumb}" alt="" class="${result.meals[0].idMeal}">
             </div>
-            <div class="pageNav"><div class="total">Total 1 meal</div>
+            <div class="pageNav"><div class="total">Total 1 result</div>
             </div>
             </section>`)
         }
+        $('section[class="introPage"]').prop('hidden',true);
         catchMealClick();
         searchIconClick()
     }
+
     //for multiple results
     else if (result.meals && result.meals !==undefined && result.meals.length > 1) {
         $('header[class="mainHeader"]').prop('hidden',true);
         $('.result').prop('hidden',false);
         $('.search').prop('hidden',true);
         $('section[class="searchArea"]').append(`<button class="fas fa-search searchIcon fa-1x" aria-label="click to search again" title="click to search again"></button>`);
-        $('section[class="searchArea"]').css({'bottom':'unset','width':'15px','height':'unset'});
-        const resultArray = result.meals.map(meal=> 
+        $('section[class="searchArea"]').css({'bottom':'unset','width':'30px','height':'unset'});
+        const resultArray = [];
+        result.meals.forEach((meal,idx)=> 
             // check if result included region info
             {if (meal.strArea === undefined) {
                 let query = {
                     i: meal.idMeal
                 }
-                //API is missing region info when query it via ingredient name, fix with turning off async and loop query thru each
-                $.ajaxSetup({
-                    async: false
-                });
                 $.getJSON(mealBaseURLById,query,function(data){
                     meal.strArea = data.meals[0].strArea;
                 })};
-                return `<section class="meal" id="${meal.idMeal}">
+                resultArray.push(`<section class="meal" id="${meal.idMeal}">
                 <div class="mealDescription">
                     <header role="banner">
-                        <h3><a href="#" class="link">${meal.strMeal}</a></h3>
+                        <h3><a href="#" class="link" title="${meal.strMeal}">${meal.strMeal}</a></h3>
                     </header>
                     <p><span class="region">Region:</span> ${meal.strArea}</p>
                 </div><div class="finalPicture link">
                     <img src="${meal.strMealThumb}" alt="" class="${meal.idMeal}">
                 </div>
                 <div class="pageNav"></div>
-                </section>`})
+                </section>`)})
             const index = 0
             $('.js-result').append(resultArray[index]);
-            $('.pageNav').append(`<div class="total" role="presentation">Total ${resultArray.length} meals</div>`);
-            $('.pageNav').append(`<div class="next"><button class="fas fa-chevron-right fa-3x" aria-label="Next result" title="Next result"></button></div>`)
+            $('.pageNav').append(`<div class="total" role="presentation">${resultArray.length} results</div>`);
+            $('.pageNav').append(`<div class="next"><button class="fas fa-chevron-right fa-2x" aria-label="Next result" title="Next result"></button></div>`)
             pageNav(resultArray,index);
+            $('section[class="introPage"]').prop('hidden',true);
             catchMealClick();
             searchIconClick()
     }
@@ -227,6 +234,7 @@ function searchIconClick() {
         $('.search').prop('hidden',false);
         $('.js-result').empty();
         $('.searchIcon').remove();
+        $('section[class="introPage"]').prop('hidden',false);
     })
 }
 
@@ -238,10 +246,10 @@ function pageNav(resultArray,index) {
         if (index < total && index - 1 >=0) {
             $('.js-result').empty();
         $('.js-result').append(resultArray[index]).slideDown(600);
-        $('.pageNav').append(`<div class="pre"><button class="fas fa-chevron-left fa-3x" aria-label="Previous result" title="Previous result"></button></a></div>`)
-        $('.pageNav').append(`<div class="total" role="presentation">Total ${total} meals - ${index+1}/${total}</div>`)
+        $('.pageNav').append(`<div class="pre"><button class="fas fa-chevron-left fa-2x" aria-label="Previous result" title="Previous result"></button></div>`)
+        $('.pageNav').append(`<div class="total" role="presentation">${total} results - ${index+1}/${total}</div>`)
         if (index+1 < total) {
-            $('.pageNav').append(`<div class="next "><button class="fas fa-chevron-right fa-3x" aria-label="Next result" title="Next result"></button></div>`)
+            $('.pageNav').append(`<div class="next "><button class="fas fa-chevron-right fa-2x" aria-label="Next result" title="Next result"></button></div>`)
         }
         pageNav(resultArray,index)
         }
@@ -252,10 +260,10 @@ function pageNav(resultArray,index) {
         $('.js-result').empty();
         $('.js-result').append(resultArray[index]).slideDown(600);
             if (index >0) {
-                $('.pageNav').append(`<div class="pre"><button class="fas fa-chevron-left fa-3x" aria-label="Previous result" title="Previous result">Previous result</button></a></div>`)
+                $('.pageNav').append(`<div class="pre"><button class="fas fa-chevron-left fa-2x" aria-label="Previous result" title="Previous result"></button></div>`)
             }
-        $('.pageNav').append(`<div class="total" aria-live="assertive" role="presentation">Total ${total} meals - ${index+1}/${total}</div>`)
-        $('.pageNav').append(`<div class="next "><button class="fas fa-chevron-right fa-3x" aria-label="Next result" title="Next result"></button></div>`)
+        $('.pageNav').append(`<div class="total" aria-live="assertive" role="presentation">${total} results - ${index+1}/${total}</div>`)
+        $('.pageNav').append(`<div class="next "><button class="fas fa-chevron-right fa-2x" aria-label="Next result" title="Next result"></button></div>`)
         pageNav(resultArray,index);
             
         }
@@ -332,20 +340,24 @@ function showInstruction(mealName,instruction,videoInstruction) {
 
 //switch between search by meal name or ingredient
 function catchSelection() {
+    //search by ingredient
     $('#searchIngredient').on('click', event=> {
-        // only fetch data from API only on first run, prevent overloading API server
-        if($('select[class="js-area"]').find('option').length === 1) {
-            $('select[class="js-area"]').empty();
-            getMealsAreas();            
-        }
-        // show search options based on user's selection
         $('input[id="mealName"]').prop('required', false);
         $('input[id="ingredient"]').prop('required', true);
         $('.filterSearch').prop('hidden', false);
         $('.searchMealName').prop('hidden', true);
+        const ingredientList = {
+            i: 'list'
+        }
+        $.getJSON(mealBaseURLList,ingredientList,function(ingredientList) {
+            const ingredientAll = ingredientList.meals.map(ingredient=> `<option value="${ingredient.strIngredient}">${ingredient.strIngredient}</option>`)
+            const ingredientArray = ingredientList.meals.map(ingredient=> ingredient.strIngredient.toLowerCase());
+            $('#ingredientList').html(ingredientAll);
+            getMealsAreas(ingredientArray);
+        })
     })
+    //search by meal name
     $('#searchMealName').on('click', event=> {
-
         //show search options based on user's selection
         $('input[id="mealName"]').prop('required', true);
         $('input[id="ingredient"]').prop('required', false);
@@ -368,12 +380,12 @@ function catchSubmit() {
     $('.search').on('submit', event=> {
         event.preventDefault();
         if($('input[id="searchMealName"]').prop('checked')) {
-        let keyword = $('input[class="mealName"]').val();
-        getMealByName(keyword);
+            let keyword = $('input[class="mealName"]').val();
+            getMealByName(keyword);
         }
         else if($('input[id="searchIngredient"]').prop('checked')) {
             const ingredient = $('input[id="ingredient"]').val();
-            const area = $('select[name="areas"]').val();
+            const area = $('select[name="areas"]').val();            
             filterSearch(ingredient,area);
         }
     })
@@ -382,7 +394,8 @@ function catchSubmit() {
 
 function go() {
     $('.go').on('click', event=>{
-        $('section[class="introPage"]').prop('hidden',true);
+        $('section[class="introPage"]').css({'bottom':'unset','font-size':'0.5em'})
+        $('.intro').prop('hidden',true);
         $('section[class="searchArea"]').prop('hidden',false)
     })
     catchSubmit();

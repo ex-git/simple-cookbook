@@ -16,15 +16,15 @@
     <main role="main">     
         <section role="region" class="introPage">
             <header role="banner" class="logo">
-                        <h1>Simpel Cookbook</h1>
+                        <h1><a href="/" title="Simple Cookbook">Simple Cookbook</a></h1>
             </header>
             <div class="intro">
                     <h2>Looking for the best Quick and Easy top-rated recipes? We have it here.</h2>
-                    <button class="go"><i class="fas fa-search fa-3x"></i></button>
+                    <button class="go" aria-label="click to search" title="click to search"><i class="fas fa-search fa-3x"></i></button>
             </div>
         </section>
 
-        <section role="region" class="searchArea" hidden>
+        <section role="region" class="searchArea" hidden aria-live="assertive">
             <form class="search" name="search">
                 <legend>Search recipe by meal name or ingredient</legend>
                 <label for="searchMealName">By Meal Name:</label>
@@ -37,7 +37,9 @@
                 </fieldset>
                 <fieldset class="filterSearch" hidden>
                     <label for="ingredient">Ingredient:</label>
-                    <input type="text" placeholder="Beef" id="ingredient" class="ingredient">
+                    <input placeholder="Beef" id="ingredient" class="ingredient" list="ingredientList">
+                    <datalist id="ingredientList">
+                    </datalist>
                     <label for="areas"class="js-area">Regional:</label>
                     <select name="areas" id="areas" class="js-area">
                             <option value="*">*</option>

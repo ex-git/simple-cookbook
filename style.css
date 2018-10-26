@@ -43,10 +43,6 @@ section[class="searchArea"]{
     font-size: 1.5em
 }
 
-/* .go {
-    margin: 5px 50%;
-} */
-
 section[class="introPage"]{
     padding: 4px;
     position: absolute;
@@ -68,6 +64,10 @@ section[class="introPage"] h1{
 section[class="introPage"] h2{
     font-size: 2em;
     font-size: 1.2em
+}
+
+section[class="introPage"] a {
+    text-decoration: none
 }
 
 .intro {
