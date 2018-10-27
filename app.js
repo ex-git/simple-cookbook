@@ -140,17 +140,17 @@ function renderHTML(result) {
         $('header[class="mainHeader"]').prop('hidden',true);
         $('.result').prop('hidden',false);
         $('.search').prop('hidden',true);
-        $('section[class="searchArea"]').append(`<button class="fas fa-search searchIcon fa-1x" aria-label="click to search again" title="click to search again"></button>`);
-        $('section[class="searchArea"]').css({'top':'2px','bottom':'unset','width':'45px','height':'unset', 'border':'unset'});
+        $('.searchIcon').prop('hidden',false);
+        $('section[class="searchArea"]').css({'top':'2px','bottom':'unset','width':'40px','height':'unset', 'border':'unset'});
         $('.searchIcon').prop('hidden', false);
-        
+
         //if no region info from response, query it from API via meal ID and add to the response
         if (!result.meals[0].strArea) {
             let query = {
                 i: result.meals[0].idMeal
             }
             $.getJSON(mealBaseURLById,query,function(data){
-                $('.js-result').append(`<section class="meal" id="${result.meals[0].idMeal}">
+                $('.js-result').html(`<section class="meal" id="${result.meals[0].idMeal}">
                 <div class="mealDescription">
                 <header role="banner">
                     <h3><a href="#" class="link" title="${result.meals[0].strMeal}">${result.meals[0].strMeal}</a></h3>
@@ -167,7 +167,7 @@ function renderHTML(result) {
             })
         }
         else {
-            $('.js-result').append(`<section class="meal" id="${result.meals[0].idMeal}">
+            $('.js-result').html(`<section class="meal" id="${result.meals[0].idMeal}">
             <div class="mealDescription">
                 <header role="banner">
                     <h3><a href="#" class="link" title="${result.meals[0].strMeal}">${result.meals[0].strMeal}</a></h3>
@@ -190,10 +190,10 @@ function renderHTML(result) {
         $('header[class="mainHeader"]').prop('hidden',true);
         $('.result').prop('hidden',false);
         $('.search').prop('hidden',true);
-        $('section[class="searchArea"]').append(`<button class="fas fa-search searchIcon fa-1x" aria-label="click to search again" title="click to search again"></button>`);
-        $('section[class="searchArea"]').css({'bottom':'unset','width':'30px','height':'unset'});
+        $('.searchIcon').prop('hidden',false);
+        $('section[class="searchArea"]').css({'top':'2px','bottom':'unset','width':'40px','height':'unset', 'border':'unset'});
         const resultArray = [];
-        result.meals.forEach((meal,idx)=> 
+        result.meals.forEach(meal=> 
             // check if result included region info
             {if (meal.strArea === undefined) {
                 let query = {
@@ -214,7 +214,7 @@ function renderHTML(result) {
                 <div class="pageNav"></div>
                 </section>`)})
             const index = 0
-            $('.js-result').append(resultArray[index]);
+            $('.js-result').html(resultArray[index]);
             $('.pageNav').append(`<div class="total" role="presentation">${resultArray.length} results</div>`);
             $('.pageNav').append(`<div class="next"><button class="fas fa-chevron-right fa-2x" aria-label="Next result" title="Next result"></button></div>`)
             pageNav(resultArray,index);
@@ -233,7 +233,7 @@ function searchIconClick() {
         $('section[class="searchArea"]').css({'bottom':'','width':'','height':'','left':''});
         $('.search').prop('hidden',false);
         $('.js-result').empty();
-        $('.searchIcon').remove();
+        $('.searchIcon').prop('hidden',true);
         $('section[class="introPage"]').prop('hidden',false);
     })
 }
