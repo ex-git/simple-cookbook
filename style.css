@@ -6,7 +6,7 @@ html {
 }
 
 body {
-    background-image: url('https://images.unsplash.com/photo-1495195134817-aeb325a55b65');
+    background-image: url('./background.jpg');
     background-size:cover;
     background-position: center;
     font-family: 'K2D', sans-serif;
