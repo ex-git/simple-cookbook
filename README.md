@@ -2,7 +2,7 @@
 Cooking recipes with video instruction and calories reference
 
 ## Live demo
-https://ex-git.github.io/simple-cookbook/
+http://cookbook.evanxu.me/
 
 ## Screenshots
 
