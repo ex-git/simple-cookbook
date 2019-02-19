@@ -2,7 +2,7 @@
 Cooking recipes with video instruction and calories reference
 
 ## Live demo
-http://cookbook.evanxu.me/
+https://cookbook.evanxu.me/
 
 ## Screenshots
 
